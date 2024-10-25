@@ -1,0 +1,37 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-10-25 09:45:13.145799",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "salutation",
+  "name1"
+ ],
+ "fields": [
+  {
+   "fieldname": "salutation",
+   "fieldtype": "Select",
+   "label": "Salutation",
+   "options": "Ms\nMrs"
+  },
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "label": "Name"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-10-25 13:31:39.598018",
+ "modified_by": "Administrator",
+ "module": "Maestro",
+ "name": "Tourist",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
