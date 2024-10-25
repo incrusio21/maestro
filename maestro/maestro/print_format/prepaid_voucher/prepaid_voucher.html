@@ -1,0 +1,233 @@
+<div class="page-break">
+    <table style="width: 100%;font-size:inherit">
+        <col style="width: 12%">
+        <col style="width: 12%">
+        <col style="width: 13%">
+        <col style="width: 13%">
+        <col style="width: 12%">
+        <col style="width: 13%">
+        <col style="width: 20%">
+        <tr>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>PREPAID VOUCHER</b>
+            </td>
+            <td class="text-right" colspan="4" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ doc.name }} : {{ frappe.utils.format_date(doc.transaction_date, "dd MMM YYYY") }}</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important; background-color: #E7E6E6">
+                Booking ref.
+            </td>
+            <td colspan="2" style="padding: 2px !important;">
+                16000-1
+            </td>
+            <td style="padding: 2px !important; background-color: #E7E6E6">
+                Date of issue
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                {{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}
+            </td>
+            <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
+                Agent
+            </td>
+            <td style="padding: 2px !important;">
+                MAESTRO BALI DMC
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Clients</b>
+            </td>
+        </tr>
+        {% for client in doc.custom_tourist_detail %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">
+                {{ client.idx }}. {{ client.name1 }} {{ client.salutation }}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;border-top: 1px solid #000;">&nbsp;</td>
+        </tr>
+        {% set hotels = doc.get("items", {"item_group": "Hotels"})%}
+        {% if hotels %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Hotels</b>
+            </td>
+        </tr>
+        {% for h in hotels %}
+        <tr>
+            <td colspan="6" style="padding: 2px !important;">
+                {{ h.description }} *{{ h.qty }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Supplier</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.db.get_value("Item", h.item_code, "custom_address")}}
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ doc.company }}
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>CHECK-IN</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.utils.format_date(h.custom_check_in, "dd.MM.YYYY") if h.custom_check_in else ""  }}
+            </td>
+            <td class="text-center" colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.utils.format_time(h.custom_check_in, "HH:mm") if h.custom_check_in else ""  }}
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>CHECK-OUT</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.utils.format_date(h.custom_check_out, "dd.MM.YYYY") if h.custom_check_out else ""  }}
+            </td>
+            <td class="text-center" colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.utils.format_time(h.custom_check_out, "HH:mm") if h.custom_check_out else ""  }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
+                Room type
+            </td>
+            <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
+                Entities
+            </td>
+            <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
+                Accomodation
+            </td>
+            <td style="padding: 2px !important; background-color: #E7E6E6">
+                Board type
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
+                {{ h.custom_room_type }}
+            </td>
+            <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
+                {{ h.custom_entities }}
+            </td>
+            <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
+                {{ h.custom_accomodation }}
+            </td>
+            <td style="padding: 2px !important; border-bottom: 3px double #000;">
+                {{ h.custom_board_type }}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
+        </tr>
+        {% endif %}
+        {% set transfers = doc.get("items", {"item_group": "Transfer"})%}
+        {% if transfers %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Transfers</b>
+            </td>
+        </tr>
+        {% for t in transfers %}
+        <tr>
+            <td colspan="6" style="padding: 2px !important;">
+                <b>Standard car</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Supplier</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="6" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                &nbsp;
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ doc.company }}
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>FROM</b>
+            </td>
+            <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>TO</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Type</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Passengers</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Date</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
+                {{ t.custom_from }}
+            </td>
+            <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
+                {{ t.custom_to }}
+            </td>
+            <td style="padding: 2px !important;border-bottom: 3px double #000;">
+                {{ t.custom_type }}
+            </td>
+            <td style="padding: 2px !important;border-bottom: 3px double #000;">
+                {{ t.custom_passengers }}
+            </td>
+            <td style="padding: 2px !important;border-bottom: 3px double #000;">
+                {{ frappe.utils.format_date(t.delivery_date, "dd.MM.YYYY") if t.delivery_date else "" }}
+            </td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
+                Remarks
+            </td>
+            <td colspan="2" style="padding: 2px !important;">&nbsp;</td>
+            <td colspan="2" class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
+                Issued by manager
+            </td>
+            <td style="padding: 2px !important;">&nbsp;</td>
+            <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
+                Admin
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" style="padding: 8px !important;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
+                Inbound company
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" style="padding: 2px !important;">
+                <img src="/files/Picture1.jpg" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">
+                Maestro Bali DMC <br>
+                Uluwatu Square Blok A/7, Jl Raya Uluwatu <br>
+                Jimbaran, Bali 80361 Indonesia <br>
+                Tel: +62-361-4463250 <br>
+                bali@maestro-bali.com <br>
+                www.maestro-bali.com <br>
+            </td>
+        </tr>
+    </table>
+</div>
