@@ -20,7 +20,7 @@
                 Booking ref.
             </td>
             <td colspan="2" style="padding: 2px !important;">
-                16000-1
+                {{ doc.po_no or "-" }}
             </td>
             <td style="padding: 2px !important; background-color: #E7E6E6">
                 Date of issue
@@ -182,7 +182,7 @@
                 {{ t.custom_type }}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
-                {{ t.custom_passengers }}
+                {{ t.custom_passengers }} {{ t.custom_passenger_type }}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
                 {{ frappe.utils.format_date(t.delivery_date, "dd.MM.YYYY") if t.delivery_date else "" }}
