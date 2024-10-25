@@ -125,6 +125,15 @@
                 {{ h.custom_board_type }}
             </td>
         </tr>
+        {% if h.custom_remarks %}
+        <tr>
+            <td colspan="7">
+                <b>Remarks :</b> <br>
+                {{ h.custom_remarks }}
+            </td>
+        </tr>
+        {% endif %}
+
         {% endfor %}
         <tr>
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
@@ -140,7 +149,7 @@
         {% for t in transfers %}
         <tr>
             <td colspan="6" style="padding: 2px !important;">
-                <b>Standard car</b>
+                <b>{{ t.description }}</b>
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 <b>Supplier</b>
@@ -188,6 +197,90 @@
                 {{ frappe.utils.format_date(t.delivery_date, "dd.MM.YYYY") if t.delivery_date else "" }}
             </td>
         </tr>
+        
+        {% if t.custom_remarks or t.custom_includes or t.custom_travel_info %}
+        <tr>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Remarks</b>
+            </td>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Included</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Travel info</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ t.custom_remarks or "" }}</b>
+            </td>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ t.custom_includes or "" }}</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ t.custom_travel_info or "" }}</b>
+            </td>
+        </tr>
+        {% endif %}
+        
+        {% endfor %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
+        </tr>
+        {% endif %}
+        {% set services = doc.get("items", {"item_group": "Services"})%}
+        {% if services %}
+        <tr>
+            <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>Services</b>
+            </td>
+        </tr>
+        {% for s in services %}
+        <tr>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Service</b>
+            </td>
+            <td colspan="2" class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ s.description }}
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Dates</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ frappe.utils.format_date(s.delivery_date, "dd.MM.YYYY") if s.delivery_date else "" }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                Supplier
+            </td>
+            <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                {{ doc.company }}
+            </td>
+        </tr>
+        {% if s.custom_remarks or s.custom_includes or s.custom_travel_info %}
+        <tr>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Remarks</b>
+            </td>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Included</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
+                <b>Travel info</b>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ s.custom_remarks or "" }}</b>
+            </td>
+            <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ s.custom_includes or "" }}</b>
+            </td>
+            <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <b>{{ s.custom_travel_info or "" }}</b>
+            </td>
+        </tr>
+        {% endif %}
+
         {% endfor %}
         <tr>
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
