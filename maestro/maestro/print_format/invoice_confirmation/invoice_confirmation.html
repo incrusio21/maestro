@@ -1,0 +1,207 @@
+<style>
+.remarks-list {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.remarks-list li {
+    margin-bottom: 2px;
+    padding-left: 15px;
+    position: relative;
+}
+
+.russian-text {
+    font-family: Arial, sans-serif;
+}
+</style>
+<div class="page-break">
+    <table style="width: 100%;font-size:11px">
+        <col style="width: 25%">
+        <col style="width: 45%">
+        <col style="width: 10%">
+        <col style="width: 15%">
+        <tr>
+            <td rowspan="5" style="padding: 2px !important;">
+                <img src="/files/Picture1.jpg" />
+            </td>
+            <td style="padding: 2px !important;">
+                <b>PT MAESTRO BALI INDO</b>
+            </td>
+            <td style="padding: 2px !important;">
+                INVOICE
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">
+                Address: Uluwatu Square Blok A/7, Jl Raya Uluwatu Jimbaran, Bali 80361
+                Indonesia
+            </td>
+            <td style="padding: 2px !important;">
+                MI NO
+            </td>
+            <td class="text-right" style="padding: 2px !important;">
+                <b>MI : 18 AUG INB 24</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">
+                Phone: +62-361-4463250
+            </td>
+            <td style="padding: 2px !important;">
+                Date
+            </td>
+            <td class="text-right" style="padding: 2px !important;">
+                <b>{{ frappe.utils.format_date(doc.transaction_date, "dd.MM.YYYY") if doc.transaction_date else "" }}</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">&nbsp;</td>
+            <td style="padding: 2px !important;">
+                Due date
+            </td>
+            <td class="text-right" style="padding: 2px !important;">
+                <b>{{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}</b>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">Email: finance@maestro-bali.com</td>
+        </tr>
+        <tr>
+            <td class="text-center" colspan="4" style="font-size: 15px;">
+                <b>INVOICE CONFIRMATION #14935-7 / MI : 18 AUG INB 24 /</b>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;font-size:11px">
+        <col style="width: 50%">
+        <col style="width: 50%">
+        <tr>
+            <td>
+                <b>Agent</b>
+            </td>
+            <td>
+                <b>Tourists</b>
+            </td>
+        </tr>
+        {% if doc.custom_tourist_detail %}
+        {% for t in doc.custom_tourist_detail %}
+            <tr>
+                <td style="padding: 2px !important;">{{ doc.company if loop.first else "&nbsp;" }}</td>
+                <td style="padding: 2px !important;">{{ t.idx }}. {{ t.name1 }} {{ t.salutation }}</td>
+            </tr>
+        {% endfor %}
+        <tr>
+            <td style="padding: 2px !important;">
+                larisa@magnumtravelclub.ru
+            </td>
+            <td style="padding: 2px !important;">
+                TOTAL: {{ doc.custom_tourist_detail|len }} PAX
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+
+    <table style="width: 100%;font-size:inherit;border: 1px solid #000">
+        <tr>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Description</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Dates</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Nt</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Price</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Q-ty</b>
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                <b>Cost {{ doc.currency }}</b>
+            </td>
+        </tr>
+        {% for item in doc.items %}
+        {% set dd = frappe.utils.format_date(item.delivery_date, "dd.MM.YYYY") if item.delivery_date else "" %}
+        <tr>
+            <td style="padding: 2px !important;">
+                {{ item.description }} 
+                {% if item.item_group == "Hotels" %} 
+                *{{ item.qty }} <br>
+                    <div style="font-size: 11px;">
+                        Rates used {{ dd }} - 06.08.24 / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
+                    </div>
+                {% endif %}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                {{ dd }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                {{ item.qty if item.item_group == "Hotels" else "" }}
+            </td>
+            <td class="text-right" style="padding: 2px !important;">
+                {{ frappe.utils.fmt_money(item.rate) if item.item_group != "Hotels" else frappe.utils.fmt_money(item.amount) }} {{ doc.currency }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">{{ item.qty if item.item_group != "Hotels" else 1 }}</td>
+            <td class="text-right" style="padding: 2px !important;">{{ frappe.utils.fmt_money(item.amount) }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td style="padding: 0px !important;">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;" class="text-right" colspan="5">
+                <b>Total, {{ doc.currency }}</b>
+            </td>
+            <td style="padding: 2px !important;" class="text-right" colspan="5">
+                <b>{{ frappe.utils.fmt_money(doc.grand_total) }}</b>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 100%;font-size:11px">
+        <col style="width: 60%">
+        <col style="width: 25%">
+        <col style="width: 15%">
+        <tr>
+            <td style="padding: 2px !important;" colspan="3">
+                Bank details: Beneficiary Name: PT. MAESTRO BALI INDO Beneficiary Bank : BANK MANDIRI – KCP
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;" colspan="3">
+                Badung Ungasan Branch Bank Address : Jl Raya Uluwatu No. 168 A, Badung, Bali - 80363 - Indonesia
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;" colspan="3">
+                Account Number : 175-00-0212407-0 (US Dollar) Swift Code : BMRIIDJA
+            </td>
+        </tr>
+        <tr>
+            <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Issued by: </td>
+            <td class="text-center" style="padding: 2px !important;vertical-align: middle !important">
+                <img src="/files/Picture1.jpg" style="width: 50% !important;" />
+            </td>
+            <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Finance</td>
+        </tr>
+    </table>
+
+    <p class="text-right" style="margin: 1px 0px">Payment by invoice should be made until 
+        <strong>{{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}</strong>
+    </p>
+
+    <div class="text-right" style="margin-top: 20px;">
+        <div style="font-weight: bold;margin-bottom: 10px;">REMARKS:</div>
+        <ul class="remarks-list">
+            <li>All costs related to the transaction have to be borne by you with no excuses</li>
+            <li>If there is a shortage of payments from the bank, the underpayment must be paid back by the client / agent without any reason or we will bill the shortage to the customer directly</li>
+            <li>We recommend adding bank charges amounting to USD 25 to avoid underpayment</li>
+            <li class="russian-text">Все дополнительные расходы по переводу несёт плательщик</li>
+            <li class="russian-text">В случае поступления неполной суммы согласно инвойсы, недостающая сумма должна быть оплачена клиентом/агентом или будет взиматься напрямую с туриста</li>
+            <li class="russian-text">Мы рекомендуем добавить к сумме инвойса возможную дополнительную комиссию банка в размере USD 25 во избежание недоплаты</li>
+        </ul>
+    </div>
+</div>
