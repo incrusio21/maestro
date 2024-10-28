@@ -30,6 +30,9 @@
             <td style="padding: 2px !important;">
                 INVOICE
             </td>
+            <td class="text-right" style="padding: 2px !important;">
+                <b>{{ doc.name }}</b>
+            </td>
         </tr>
         <tr>
             <td style="padding: 2px !important;">
@@ -87,13 +90,13 @@
         {% if doc.custom_tourist_detail %}
         {% for t in doc.custom_tourist_detail %}
             <tr>
-                <td style="padding: 2px !important;">{{ doc.company if loop.first else "&nbsp;" }}</td>
+                <td style="padding: 2px !important;">{{ (doc.customer or "") if loop.first else "&nbsp;" }}</td>
                 <td style="padding: 2px !important;">{{ t.idx }}. {{ t.name1 }} {{ t.salutation }}</td>
             </tr>
         {% endfor %}
         <tr>
             <td style="padding: 2px !important;">
-                larisa@magnumtravelclub.ru
+                {{ doc.custom_email_pic or "" }}
             </td>
             <td style="padding: 2px !important;">
                 TOTAL: {{ doc.custom_tourist_detail|len }} PAX
@@ -106,6 +109,12 @@
     </table>
 
     <table style="width: 100%;font-size:inherit;border: 1px solid #000">
+        <col style="width: 40%">
+        <col style="width: 15%">
+        <col style="width: 7%">
+        <col style="width: 13%">
+        <col style="width: 10%">
+        <col style="width: 15%">
         <tr>
             <td class="text-center" style="padding: 2px !important;">
                 <b>Description</b>
@@ -130,14 +139,15 @@
         {% set dd = frappe.utils.format_date(item.delivery_date, "dd.MM.YYYY") if item.delivery_date else "" %}
         <tr>
         {% if item.item_group == "Hotels" %}
+            {% set end_days = frappe.utils.format_date(frappe.utils.add_days(item.delivery_date, item.qty), "dd.MM.YYYY")%}
             <td style="padding: 2px !important;">
                 {{ item.description }} *{{ item.qty }} <br>
                 <div style="font-size: 11px;">
-                    Rates used {{ dd }} - 06.08.24 / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
+                    Rates used {{ dd }} - {{ end_days }} / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
                 </div>
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                {{ dd }}
+                {{ dd }} - {{ end_days }}
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 {{ item.qty }}
