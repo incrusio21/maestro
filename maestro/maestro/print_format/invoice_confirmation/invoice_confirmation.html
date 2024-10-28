@@ -100,6 +100,9 @@
             </td>
         </tr>
         {% endif %}
+        <tr style="padding: 20px !important;">
+            <td>&nbsp;</td>
+        </tr>
     </table>
 
     <table style="width: 100%;font-size:inherit;border: 1px solid #000">
@@ -126,25 +129,36 @@
         {% for item in doc.items %}
         {% set dd = frappe.utils.format_date(item.delivery_date, "dd.MM.YYYY") if item.delivery_date else "" %}
         <tr>
+        {% if item.item_group == "Hotels" %}
             <td style="padding: 2px !important;">
-                {{ item.description }} 
-                {% if item.item_group == "Hotels" %} 
-                *{{ item.qty }} <br>
-                    <div style="font-size: 11px;">
-                        Rates used {{ dd }} - 06.08.24 / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
-                    </div>
-                {% endif %}
+                {{ item.description }} *{{ item.qty }} <br>
+                <div style="font-size: 11px;">
+                    Rates used {{ dd }} - 06.08.24 / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
+                </div>
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 {{ dd }}
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                {{ item.qty if item.item_group == "Hotels" else "" }}
+                {{ item.qty }}
             </td>
             <td class="text-right" style="padding: 2px !important;">
-                {{ frappe.utils.fmt_money(item.rate) if item.item_group != "Hotels" else frappe.utils.fmt_money(item.amount) }} {{ doc.currency }}
+                {{ frappe.utils.fmt_money(item.amount) }} {{ doc.currency }}
             </td>
-            <td class="text-center" style="padding: 2px !important;">{{ item.qty if item.item_group != "Hotels" else 1 }}</td>
+            <td class="text-center" style="padding: 2px !important;">{{ 1 }}</td>
+        {% else %}
+            <td style="padding: 2px !important;">
+                {{ item.item_group }} : {{ item.description }} 
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                {{ dd }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;"></td>
+            <td class="text-right" style="padding: 2px !important;">
+                {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">{{ item.qty }}</td>
+        {% endif %}
             <td class="text-right" style="padding: 2px !important;">{{ frappe.utils.fmt_money(item.amount) }}</td>
         </tr>
         {% endfor %}
