@@ -3,7 +3,7 @@
 
 from frappe.utils import date_diff, flt
 
-def real_qty_items(self, method=None):
+def real_qty_and_entities_items(self, method=None):
     for i in self.items:
         if not i.custom_quantity:
             i.custom_quantity = i.qty

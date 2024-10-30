@@ -131,7 +131,7 @@ doc_events = {
 	# 	"on_trash": "method"
 	# }
     "Sales Order": {
-        "before_validate": "maestro.maestro.custom.sales_order.real_qty_items"
+        "before_validate": "maestro.maestro.custom.sales_order.real_qty_and_entities_items"
     }
 }
 
