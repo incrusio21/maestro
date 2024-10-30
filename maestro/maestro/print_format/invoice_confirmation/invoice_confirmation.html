@@ -39,17 +39,12 @@
                 Address: Uluwatu Square Blok A/7, Jl Raya Uluwatu Jimbaran, Bali 80361
                 Indonesia
             </td>
-            <td style="padding: 2px !important;">
+            <!-- <td style="padding: 2px !important;">
                 MI NO
             </td>
             <td class="text-right" style="padding: 2px !important;">
                 <b>MI : 18 AUG INB 24</b>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;">
-                Phone: +62-361-4463250
-            </td>
+            </td> -->
             <td style="padding: 2px !important;">
                 Date
             </td>
@@ -58,20 +53,29 @@
             </td>
         </tr>
         <tr>
-            <td style="padding: 2px !important;">&nbsp;</td>
+            <td style="padding: 2px !important;">
+                Phone: +62-361-4463250
+            </td>
             <td style="padding: 2px !important;">
                 Due date
             </td>
             <td class="text-right" style="padding: 2px !important;">
-                <b>{{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}</b>
+                <b>{{ frappe.utils.format_date(doc.custom_due_date, "dd.MM.YYYY") if doc.custom_due_date else "" }}</b>
             </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">&nbsp;</td>
         </tr>
         <tr>
             <td style="padding: 2px !important;">Email: finance@maestro-bali.com</td>
         </tr>
         <tr>
             <td class="text-center" colspan="4" style="font-size: 15px;">
-                <b>INVOICE CONFIRMATION #14935-7 / MI : 18 AUG INB 24 /</b>
+                <b>
+                    {% set invoice = doc.name.split("SAL-ORD-")%}
+                    INVOICE CONFIRMATION #{{ invoice[1] }} 
+                    <!-- / MI : 18 AUG INB 24 / -->
+                </b>
             </td>
         </tr>
     </table>
@@ -135,22 +139,24 @@
                 <b>Cost {{ doc.currency }}</b>
             </td>
         </tr>
-        {% for item in doc.items %}
+        {% set totals = {"inv": 0} %}
+        {% for item in (doc.get("items", {"custom_is_print": 1}) or doc.items) %}
         {% set dd = frappe.utils.format_date(item.delivery_date, "dd.MM.YYYY") if item.delivery_date else "" %}
         <tr>
         {% if item.item_group == "Hotels" %}
-            {% set end_days = frappe.utils.format_date(frappe.utils.add_days(item.delivery_date, item.qty), "dd.MM.YYYY")%}
+            {% set check_in = frappe.utils.format_date(item.custom_check_in, "dd.MM.YYYY")%}
+            {% set check_out = frappe.utils.format_date(item.custom_check_out, "dd.MM.YYYY")%}
             <td style="padding: 2px !important;">
-                {{ item.description }} *{{ item.qty }} <br>
+                {{ item.description }} *{{ item.get_formatted("custom_quantity") }} <br>
                 <div style="font-size: 11px;">
-                    Rates used {{ dd }} - {{ end_days }} / {{ item.qty }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
+                    Rates used {{ check_in }} - {{ check_out }} / {{ item.get_formatted("custom_quantity") }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
                 </div>
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                {{ dd }} - {{ end_days }}
+                {{ check_in }} - {{ check_out }}
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                {{ item.qty }}
+                {{ item.get_formatted("custom_entities") }}
             </td>
             <td class="text-right" style="padding: 2px !important;">
                 {{ frappe.utils.fmt_money(item.amount) }} {{ doc.currency }}
@@ -167,9 +173,29 @@
             <td class="text-right" style="padding: 2px !important;">
                 {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }}
             </td>
-            <td class="text-center" style="padding: 2px !important;">{{ item.qty }}</td>
+            <td class="text-center" style="padding: 2px !important;">{{ item.get_formatted("qty") }}</td>
         {% endif %}
             <td class="text-right" style="padding: 2px !important;">{{ frappe.utils.fmt_money(item.amount) }}</td>
+        </tr>
+        {% if totals.update({ "inv": totals.inv + item.amount }) %}{% endif %}
+        {% endfor %}
+        {% for tax in doc.taxes%}
+        <tr>
+            <td style="padding: 2px !important;">
+                Surcharge : {{ tax.description }} 
+            </td>
+            <td class="text-center" style="padding: 2px !important;">
+                Any Time
+            </td>
+            <td class="text-center" style="padding: 2px !important;"></td>
+            <td class="text-right" style="padding: 2px !important;">
+                {{ frappe.utils.fmt_money(tax.tax_amount) }} {{ doc.currency }}
+            </td>
+            <td class="text-center" style="padding: 2px !important;">1</td>
+            <td class="text-right" style="padding: 2px !important;">
+                {{ frappe.utils.fmt_money(tax.tax_amount) }}
+            </td>
+            {% if totals.update({ "inv": totals.inv + tax.tax_amount }) %}{% endif %}
         </tr>
         {% endfor %}
         <tr>
@@ -180,30 +206,38 @@
                 <b>Total, {{ doc.currency }}</b>
             </td>
             <td style="padding: 2px !important;" class="text-right" colspan="5">
-                <b>{{ frappe.utils.fmt_money(doc.grand_total) }}</b>
+                <b>{{ frappe.utils.fmt_money(totals.inv) }}</b>
             </td>
         </tr>
     </table>
 
+    {% if doc.custom_bank_info %}
+    {% set bank_details = frappe.db.get_value("Bank Details", doc.custom_bank_info, [
+        "beneficiary_name", "beneficiary_bank", "bank_address", "account_number", "swift_code"
+    ], as_dict=1) %}
+
+    <table style="width: 100%;font-size:11px">
+        <tr>
+            <td style="padding: 2px !important;">
+                Bank details: Beneficiary Name: {{ bank_details.beneficiary_name or "-" }} Beneficiary Bank : {{ bank_details.beneficiary_bank or "-" }}
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">
+                Badung Ungasan Branch Bank Address : {{ bank_details.bank_address or "-" }}
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 2px !important;">
+                Account Number : {{ bank_details.account_number or "-" }} Swift Code : {{ bank_details.swift_code or "-" }}
+            </td>
+        </tr>
+    </table>
+    {% endif %}
     <table style="width: 100%;font-size:11px">
         <col style="width: 60%">
         <col style="width: 25%">
         <col style="width: 15%">
-        <tr>
-            <td style="padding: 2px !important;" colspan="3">
-                Bank details: Beneficiary Name: PT. MAESTRO BALI INDO Beneficiary Bank : BANK MANDIRI – KCP
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;" colspan="3">
-                Badung Ungasan Branch Bank Address : Jl Raya Uluwatu No. 168 A, Badung, Bali - 80363 - Indonesia
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;" colspan="3">
-                Account Number : 175-00-0212407-0 (US Dollar) Swift Code : BMRIIDJA
-            </td>
-        </tr>
         <tr>
             <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Issued by: </td>
             <td class="text-center" style="padding: 2px !important;vertical-align: middle !important">
@@ -212,7 +246,6 @@
             <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Finance</td>
         </tr>
     </table>
-
     <p class="text-right" style="margin: 1px 0px">Payment by invoice should be made until 
         <strong>{{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}</strong>
     </p>

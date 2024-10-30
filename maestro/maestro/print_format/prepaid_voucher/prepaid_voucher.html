@@ -12,27 +12,30 @@
                 <b>PREPAID VOUCHER</b>
             </td>
             <td class="text-right" colspan="4" style="padding: 2px !important;border-bottom: 1px solid #000;">
-                <b>{{ doc.name }} : {{ frappe.utils.format_date(doc.transaction_date, "dd MMM YYYY") }}</b>
+                <b>{{ doc.name }}</b>
             </td>
         </tr>
         <tr>
             <td style="padding: 2px !important; background-color: #E7E6E6">
                 Booking ref.
+                <div style="font-size: 10px;">Номер заказа</div>
             </td>
             <td colspan="2" style="padding: 2px !important;">
                 {{ doc.po_no or "-" }}
             </td>
             <td style="padding: 2px !important; background-color: #E7E6E6">
                 Date of issue
+                <div style="font-size: 10px;">Дата выписки</div>
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                {{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}
+                {{ frappe.utils.format_date(doc.creation, "dd.MM.YYYY") if doc.creation else "" }}
             </td>
-            <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
+            <td style="padding: 2px !important; background-color: #E7E6E6">
                 Agent
+                <div style="font-size: 10px;">Агент</div>
             </td>
             <td style="padding: 2px !important;">
-                {{ doc.customer or "" }}
+                {{ doc.get_formatted("customer") }}
             </td>
         </tr>
         <tr>
@@ -53,7 +56,7 @@
         <tr>
             <td colspan="7" style="padding: 2px !important;border-top: 1px solid #000;">&nbsp;</td>
         </tr>
-        {% set hotels = doc.get("items", {"item_group": "Hotels"})%}
+        {% set hotels = doc.get("items", {"item_group": "Hotels", "custom_is_print": 1}) or doc.get("items", {"item_group": "Hotels"}) %}
         {% if hotels %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -63,10 +66,10 @@
         {% for h in hotels %}
         <tr>
             <td colspan="6" style="padding: 2px !important;">
-                {{ h.description }} *{{ h.qty }}
+                {{ h.description }} *{{ h.get_formatted("custom_quantity") }}
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                <b>Supplier</b>
+                <b>Supplier</b> Поставщик
             </td>
         </tr>
         <tr>
@@ -80,6 +83,7 @@
         <tr>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>CHECK-IN</b>
+                <div style="font-size: 10px;">Заселение</div>
             </td>
             <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 {{ frappe.utils.format_date(h.custom_check_in, "dd.MM.YYYY") if h.custom_check_in else ""  }}
@@ -89,6 +93,7 @@
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>CHECK-OUT</b>
+                <div style="font-size: 10px;">Выселение</div>
             </td>
             <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 {{ frappe.utils.format_date(h.custom_check_out, "dd.MM.YYYY") if h.custom_check_out else ""  }}
@@ -99,16 +104,20 @@
         </tr>
         <tr>
             <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
-                Room type
+                <b>Room type</b> 
+                <div style="font-size: 10px;">Тип номера</div>
             </td>
             <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
-                Entities
+                <b>Entities</b> 
+                <div style="font-size: 10px;">Кол-во</div>
             </td>
             <td colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
-                Accomodation
+                <b>Accomodation</b>
+                <div style="font-size: 10px;">Размещение</div>
             </td>
             <td style="padding: 2px !important; background-color: #E7E6E6">
                 Board type
+                <div style="font-size: 10px;">Питание</div>
             </td>
         </tr>
         <tr>
@@ -116,7 +125,7 @@
                 {{ h.custom_room_type }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
-                {{ h.custom_entities }}
+                {{ h.get_formatted("custom_entities") }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
                 {{ h.custom_accomodation }}
@@ -139,7 +148,7 @@
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
         </tr>
         {% endif %}
-        {% set transfers = doc.get("items", {"item_group": "Transfer"})%}
+        {% set transfers = doc.get("items", {"item_group": "Transfer", "custom_is_print": 1}) or doc.get("items", {"item_group": "Transfer"}) %}
         {% if transfers %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -152,7 +161,7 @@
                 <b>{{ t.description }}</b>
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                <b>Supplier</b>
+                <b>Supplier</b> Поставщик
             </td>
         </tr>
         <tr>
@@ -166,18 +175,23 @@
         <tr>
             <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>FROM</b>
+                <div style="font-size: 10px;">Пункт отправления</div>
             </td>
             <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>TO</b>
+                <div style="font-size: 10px;">Пункт назначения</div>
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>Type</b>
+                <div style="font-size: 10px;">Тип</div>
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>Passengers</b>
+                <div style="font-size: 10px;">Пассажиров</div>
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>Date</b>
+                <div style="font-size: 10px;">Дата</div>
             </td>
         </tr>
         <tr>
@@ -191,7 +205,7 @@
                 {{ t.custom_type }}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
-                {{ t.custom_passengers }} {{ t.custom_passenger_type }}
+                {{ t.get_formatted("custom_passengers") }} {{ t.custom_passenger_type }}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
                 {{ frappe.utils.format_date(t.delivery_date, "dd.MM.YYYY") if t.delivery_date else "" }}
@@ -202,12 +216,15 @@
         <tr>
             <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Remarks</b>
+                <div style="font-size: 10px;">Примечания</div>
             </td>
             <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Included</b>
+                <div style="font-size: 10px;">Включено</div>
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Travel info</b>
+                <div style="font-size: 10px;">Инфо о встрече</div>
             </td>
         </tr>
         <tr>
@@ -228,7 +245,7 @@
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
         </tr>
         {% endif %}
-        {% set services = doc.get("items", {"item_group": "Services"})%}
+        {% set services = doc.get("items", {"item_group": "Services", "custom_is_print": 1}) or doc.get("items", {"item_group": "Services"})%}
         {% if services %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -239,18 +256,21 @@
         <tr>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Service</b>
+                <div style="font-size: 10px;">Услуга</div>
             </td>
             <td colspan="2" class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 {{ s.description }}
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Dates</b>
+                <div style="font-size: 10px;">Даты</div>
             </td>
             <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 {{ frappe.utils.format_date(s.delivery_date, "dd.MM.YYYY") if s.delivery_date else "" }}
             </td>
             <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 Supplier
+                <div style="font-size: 10px;">Поставщик</div>
             </td>
             <td class="text-center" style="padding: 2px !important;border-bottom: 1px solid #000;">
                 {{ doc.company }}
@@ -260,12 +280,15 @@
         <tr>
             <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Remarks</b>
+                <div style="font-size: 10px;">Примечания</div>
             </td>
             <td colspan="3" style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Included</b>
+                <div style="font-size: 10px;">Включено</div>
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;background-color: #E7E6E6">
                 <b>Travel info</b>
+                <div style="font-size: 10px;">Инфо о встрече</div>
             </td>
         </tr>
         <tr>
@@ -289,10 +312,12 @@
         <tr>
             <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
                 Remarks
+                <div style="font-size: 10px;">Примечания</div>
             </td>
             <td colspan="2" style="padding: 2px !important;">&nbsp;</td>
             <td colspan="2" class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
                 Issued by manager
+                <div style="font-size: 10px;">Выписано менеджером</div>
             </td>
             <td style="padding: 2px !important;">&nbsp;</td>
             <td class="text-center" style="padding: 2px !important; background-color: #E7E6E6">
@@ -305,6 +330,7 @@
         <tr>
             <td class="text-center" colspan="2" style="padding: 2px !important; background-color: #E7E6E6">
                 Inbound company
+                <div style="font-size: 10px;">Встречающая компания</div>
             </td>
         </tr>
         <tr>
