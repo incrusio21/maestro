@@ -15,71 +15,81 @@
 }
 </style>
 <div class="page-break">
-    <table style="width: 100%;font-size:11px">
-        <col style="width: 25%">
-        <col style="width: 45%">
-        <col style="width: 10%">
-        <col style="width: 15%">
-        <tr>
-            <td rowspan="5" style="padding: 2px !important;">
-                <img src="/files/Picture1.jpg" />
-            </td>
-            <td style="padding: 2px !important;">
-                <b>PT MAESTRO BALI INDO</b>
-            </td>
-            <td style="padding: 2px !important;">
-                INVOICE
-            </td>
-            <td class="text-right" style="padding: 2px !important;">
-                <b>{{ doc.name }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;">
-                Address: Uluwatu Square Blok A/7, Jl Raya Uluwatu Jimbaran, Bali 80361
-                Indonesia
-            </td>
-            <!-- <td style="padding: 2px !important;">
-                MI NO
-            </td>
-            <td class="text-right" style="padding: 2px !important;">
-                <b>MI : 18 AUG INB 24</b>
-            </td> -->
-            <td style="padding: 2px !important;">
-                Date
-            </td>
-            <td class="text-right" style="padding: 2px !important;">
-                <b>{{ frappe.utils.format_date(doc.transaction_date, "dd.MM.YYYY") if doc.transaction_date else "" }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;">
-                Phone: +62-361-4463250
-            </td>
-            <td style="padding: 2px !important;">
-                Due date
-            </td>
-            <td class="text-right" style="padding: 2px !important;">
-                <b>{{ frappe.utils.format_date(doc.custom_due_date, "dd.MM.YYYY") if doc.custom_due_date else "" }}</b>
-            </td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;">&nbsp;</td>
-        </tr>
-        <tr>
-            <td style="padding: 2px !important;">Email: finance@maestro-bali.com</td>
-        </tr>
-        <tr>
-            <td class="text-center" colspan="4" style="font-size: 15px;">
-                <b>
-                    {% set invoice = doc.name.split("SAL-ORD-")%}
-                    INVOICE CONFIRMATION #{{ invoice[1] }} 
-                    <!-- / MI : 18 AUG INB 24 / -->
-                </b>
-            </td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-xs-9" style="padding-right: 0px;">
+            <table style="width: 100%;font-size:11px">
+                <col style="width: 25%">
+                <col style="width: 75%">
+                <tr>
+                    <td rowspan="5" style="padding: 2px !important;">
+                        <img src="/files/Picture1.jpg" />
+                    </td>
+                    <td style="padding: 2px !important;">
+                        <b>PT MAESTRO BALI INDO</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 2px !important;">
+                        Address: Uluwatu Square Blok A/7, Jl Raya Uluwatu Jimbaran, Bali 80361
+                        Indonesia
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 2px !important;">
+                        Phone: +62-361-4463250
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 2px !important;">Email: finance@maestro-bali.com</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-3" style="padding-left: 0px;">
+            <table style="width: 100%;font-size:11px">
+                <col style="width: 10%">
+                <col style="width: 90%">
+                <tr>
+                    <td style="padding: 2px !important;">
+                        INVOICE
+                    </td>
+                    <td class="text-right" style="padding: 2px !important;">
+                        <b>{{ doc.name }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <!-- <td style="padding: 2px !important;">
+                        MI NO
+                    </td>
+                    <td class="text-right" style="padding: 2px !important;">
+                        <b>MI : 18 AUG INB 24</b>
+                    </td> -->
+                    <td style="padding: 2px !important;">
+                        Date
+                    </td>
+                    <td class="text-right" style="padding: 2px !important;">
+                        <b>{{ frappe.utils.format_date(doc.transaction_date, "dd.MM.YYYY") if doc.transaction_date else "" }}</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 2px !important;">
+                        Due date
+                    </td>
+                    <td class="text-right" style="padding: 2px !important;">
+                        <b>{{ frappe.utils.format_date(doc.custom_due_date, "dd.MM.YYYY") if doc.custom_due_date else "" }}</b>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
+    <div class="text-center" style="font-size: 15px;">
+        <b>
+            {% set invoice = doc.name.split("SAL-ORD-")%}
+            INVOICE CONFIRMATION #{{ invoice[1] }} 
+            <!-- / MI : 18 AUG INB 24 / -->
+        </b>
+    </div>
+    
     <table style="width: 100%;font-size:11px">
         <col style="width: 50%">
         <col style="width: 50%">
@@ -247,7 +257,7 @@
         </tr>
     </table>
     <p class="text-right" style="margin: 1px 0px">Payment by invoice should be made until 
-        <strong>{{ frappe.utils.format_date(doc.delivery_date, "dd.MM.YYYY") if doc.delivery_date else "" }}</strong>
+        <strong>{{ frappe.utils.format_date(doc.custom_due_date, "dd.MM.YYYY") if doc.custom_due_date else "" }}</strong>
     </p>
 
     <div class="text-right" style="margin-top: 20px;">
