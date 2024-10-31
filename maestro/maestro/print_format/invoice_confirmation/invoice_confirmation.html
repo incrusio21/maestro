@@ -15,6 +15,7 @@
 }
 </style>
 <div class="page-break">
+    {% set invoice = doc.name.split("SAL-ORD-")%}
     <div class="row">
         <div class="col-xs-9" style="padding-right: 0px;">
             <table style="width: 100%;font-size:11px">
@@ -53,7 +54,7 @@
                         INVOICE
                     </td>
                     <td class="text-right" style="padding: 2px !important;">
-                        <b>{{ doc.name }}</b>
+                        <b>{{ invoice[1] }}</b>
                     </td>
                 </tr>
                 <tr>
@@ -84,43 +85,51 @@
 
     <div class="text-center" style="font-size: 15px;">
         <b>
-            {% set invoice = doc.name.split("SAL-ORD-")%}
+            
             INVOICE CONFIRMATION #{{ invoice[1] }} 
             <!-- / MI : 18 AUG INB 24 / -->
         </b>
     </div>
-    
-    <table style="width: 100%;font-size:11px">
-        <col style="width: 50%">
-        <col style="width: 50%">
-        <tr>
-            <td>
-                <b>Agent</b>
-            </td>
-            <td>
-                <b>Tourists</b>
-            </td>
-        </tr>
-        {% if doc.custom_tourist_detail %}
-        {% for t in doc.custom_tourist_detail %}
-            <tr>
-                <td style="padding: 2px !important;">{{ (doc.customer or "") if loop.first else "&nbsp;" }}</td>
-                <td style="padding: 2px !important;">{{ t.idx }}. {{ t.name1 }} {{ t.salutation }}</td>
-            </tr>
-        {% endfor %}
-        <tr>
-            <td style="padding: 2px !important;">
-                {{ doc.custom_email_pic or "" }}
-            </td>
-            <td style="padding: 2px !important;">
-                TOTAL: {{ doc.custom_tourist_detail|len }} PAX
-            </td>
-        </tr>
-        {% endif %}
-        <tr style="padding: 20px !important;">
-            <td>&nbsp;</td>
-        </tr>
-    </table>
+    <div class="row">
+        <div class="col-xs-6" style="padding-right: 0px;">
+            <table style="width: 100%;font-size:11px">
+                <tr>
+                    <td>
+                        <b>Agent</b>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 2px !important;">
+                        {{ doc.custom_email_pic or "" }}
+                    </td>
+                </tr>
+                <tr style="padding: 20px !important;">
+                    <td>&nbsp;</td>
+                </tr>
+            </table>
+        </div>
+        <div class="col-xs-6" style="padding-right: 0px;">
+            <table style="width: 100%;font-size:11px">
+                <tr>
+                    <td>
+                        <b>Tourists</b>
+                    </td>
+                </tr>
+                {% if doc.custom_tourist_detail %}
+                {% for t in doc.custom_tourist_detail %}
+                    <tr>
+                        <td style="padding: 2px !important;">{{ t.idx }}. {{ t.name1 }} {{ t.salutation }}</td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td style="padding: 2px !important;">
+                        TOTAL: {{ doc.custom_tourist_detail|len }} PAX
+                    </td>
+                </tr>
+                {% endif %}
+            </table>
+        </div>
+    </div>
 
     <table style="width: 100%;font-size:inherit;border: 1px solid #000">
         <col style="width: 40%">

@@ -89,7 +89,7 @@
                 {{ frappe.utils.format_date(h.custom_check_in, "dd.MM.YYYY") if h.custom_check_in else ""  }}
             </td>
             <td class="text-center" colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
-                {{ frappe.utils.format_time(h.custom_check_in, "HH:mm") if h.custom_check_in else ""  }}
+                {{ frappe.utils.format_time(h.custom_check_in_time, "HH:mm") if h.custom_check_in_time else ""  }}
             </td>
             <td style="padding: 2px !important;border-bottom: 1px solid #000;">
                 <b>CHECK-OUT</b>
@@ -99,7 +99,7 @@
                 {{ frappe.utils.format_date(h.custom_check_out, "dd.MM.YYYY") if h.custom_check_out else ""  }}
             </td>
             <td class="text-center" colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
-                {{ frappe.utils.format_time(h.custom_check_out, "HH:mm") if h.custom_check_out else ""  }}
+                {{ frappe.utils.format_time(h.custom_check_out_time, "HH:mm") if h.custom_check_out_time else ""  }}
             </td>
         </tr>
         <tr>
