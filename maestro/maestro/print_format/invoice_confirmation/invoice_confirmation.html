@@ -140,7 +140,7 @@
                 <b>Nt</b>
             </td>
             <td class="text-center" style="padding: 2px !important;">
-                <b>Price</b>
+                <b>Price ({{ doc.currency }})</b>
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 <b>Q-ty</b>
@@ -169,7 +169,7 @@
                 {{ item.get_formatted("custom_entities") }}
             </td>
             <td class="text-right" style="padding: 2px !important;">
-                {{ frappe.utils.fmt_money(item.amount) }} {{ doc.currency }}
+                {{ frappe.utils.fmt_money(item.amount) }} 
             </td>
             <td class="text-center" style="padding: 2px !important;">{{ 1 }}</td>
         {% else %}
@@ -181,7 +181,7 @@
             </td>
             <td class="text-center" style="padding: 2px !important;"></td>
             <td class="text-right" style="padding: 2px !important;">
-                {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }}
+                {{ frappe.utils.fmt_money(item.rate) }}
             </td>
             <td class="text-center" style="padding: 2px !important;">{{ item.get_formatted("qty") }}</td>
         {% endif %}
@@ -199,7 +199,7 @@
             </td>
             <td class="text-center" style="padding: 2px !important;"></td>
             <td class="text-right" style="padding: 2px !important;">
-                {{ frappe.utils.fmt_money(tax.tax_amount) }} {{ doc.currency }}
+                {{ frappe.utils.fmt_money(tax.tax_amount) }}
             </td>
             <td class="text-center" style="padding: 2px !important;">1</td>
             <td class="text-right" style="padding: 2px !important;">
