@@ -1,0 +1,14 @@
+<style>
+    @media print{@page {size: landscape}}
+</style>
+
+{% for tr in doc.get("custom_tourist_detail", {"is_print": 1}) or doc.custom_tourist_detail %}
+<div class="page-break">
+    <div class="text-center">
+        <img style="width: 50% !important;" src="/files/MAESTRO_INDONESIA_DMC_REBRANDING_LOGO-INVERT-1-removebg-preview.png" />
+    </div>
+    <div class="text-center" style="border-top: 5px solid #FF0000;font-size:200px;padding-top:5px">
+        {{ tr.name1 }}
+    </div>
+</div>
+{% endfor %}
