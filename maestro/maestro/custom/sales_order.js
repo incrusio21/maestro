@@ -1,6 +1,25 @@
 // Copyright (c) 2024, DAS and contributors
 // For license information, please see license.txt
 
+frappe.ui.form.on("Sales Order", {
+    refresh(frm) {
+        console.log(frm.doc.docstatus)
+        if(frm.doc.docstatus == 1){
+            frm.add_custom_button(
+                __("Additional Order"),
+                    function () {
+                        frappe.model.open_mapped_doc({
+                            method: "maestro.maestro.custom.sales_order.make_additional_sales_order",
+                            frm: cur_frm,
+                            freeze_message: __("Creating Sales Order ..."),
+                        });
+                    },
+                __("Create")
+            )
+        }
+    }
+})
+
 frappe.ui.form.on("Sales Order Item", {
     custom_check_in(frm, cdt, cdn) {
         frm.trigger("set_enteties", cdt, cdn);

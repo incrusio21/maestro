@@ -131,6 +131,7 @@ doc_events = {
 	# 	"on_trash": "method"
 	# }
     "Sales Order": {
+        "autoname": "maestro.maestro.custom.sales_order.additional_sales_order_autoname",
         "before_validate": "maestro.maestro.custom.sales_order.real_qty_and_entities_items"
     }
 }
