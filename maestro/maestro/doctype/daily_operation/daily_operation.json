@@ -1,0 +1,248 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-11-28 14:16:13.276687",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_6n2r",
+  "date",
+  "client",
+  "column_break_lvfi",
+  "b2b",
+  "mino",
+  "amended_from",
+  "section_break_snfh",
+  "adult",
+  "column_break_arbc",
+  "child",
+  "column_break_deuw",
+  "column_break_uure",
+  "section_break_hagn",
+  "hotel",
+  "room",
+  "program",
+  "time",
+  "place",
+  "guide",
+  "remarks",
+  "column_break_kzid",
+  "tipe",
+  "lunch",
+  "dinner",
+  "status",
+  "driver",
+  "mobil",
+  "supplier",
+  "flight",
+  "route",
+  "time_flight",
+  "group",
+  "paging"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_6n2r",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Daily Operation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "label": "Date"
+  },
+  {
+   "fieldname": "client",
+   "fieldtype": "Link",
+   "label": "Client",
+   "options": "Customer"
+  },
+  {
+   "fieldname": "column_break_lvfi",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "b2b",
+   "fieldtype": "Data",
+   "label": "B2B"
+  },
+  {
+   "fieldname": "mino",
+   "fieldtype": "Data",
+   "label": "MINO"
+  },
+  {
+   "fieldname": "section_break_snfh",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "adult",
+   "fieldtype": "Int",
+   "label": "Adult"
+  },
+  {
+   "fieldname": "column_break_arbc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "child",
+   "fieldtype": "Int",
+   "label": "Child"
+  },
+  {
+   "fieldname": "column_break_deuw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_uure",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_hagn",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "hotel",
+   "fieldtype": "Link",
+   "label": "Hotel",
+   "options": "Item"
+  },
+  {
+   "fieldname": "room",
+   "fieldtype": "Data",
+   "label": "Room"
+  },
+  {
+   "fieldname": "program",
+   "fieldtype": "Data",
+   "label": "Program"
+  },
+  {
+   "fieldname": "time",
+   "fieldtype": "Time",
+   "label": "Time"
+  },
+  {
+   "fieldname": "place",
+   "fieldtype": "Data",
+   "label": "Place"
+  },
+  {
+   "fieldname": "guide",
+   "fieldtype": "Link",
+   "label": "Guide",
+   "options": "Guide"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Data",
+   "label": "Remarks"
+  },
+  {
+   "fieldname": "column_break_kzid",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "tipe",
+   "fieldtype": "Select",
+   "label": "Tipe",
+   "options": "Transfer In\nTransfer Intra\nTransfer Out\nLand Tours/Optional\nSupplier\nPackage"
+  },
+  {
+   "fieldname": "lunch",
+   "fieldtype": "Link",
+   "label": "Lunch",
+   "options": "Item"
+  },
+  {
+   "fieldname": "dinner",
+   "fieldtype": "Link",
+   "label": "Dinner",
+   "options": "Item"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "OK\nCxld\nPending\nRcfm"
+  },
+  {
+   "fieldname": "driver",
+   "fieldtype": "Link",
+   "label": "Driver",
+   "options": "Driver"
+  },
+  {
+   "fieldname": "mobil",
+   "fieldtype": "Link",
+   "label": "Mobil",
+   "options": "Vehicle"
+  },
+  {
+   "fieldname": "supplier",
+   "fieldtype": "Data",
+   "label": "Supplier"
+  },
+  {
+   "fieldname": "flight",
+   "fieldtype": "Link",
+   "label": "Flight",
+   "options": "Flight"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "Route"
+  },
+  {
+   "fieldname": "time_flight",
+   "fieldtype": "Date",
+   "label": "Time Flight"
+  },
+  {
+   "fieldname": "group",
+   "fieldtype": "Data",
+   "label": "Group"
+  },
+  {
+   "fieldname": "paging",
+   "fieldtype": "Data",
+   "label": "Paging"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2024-11-29 14:07:44.665189",
+ "modified_by": "Administrator",
+ "module": "Maestro",
+ "name": "Daily Operation",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

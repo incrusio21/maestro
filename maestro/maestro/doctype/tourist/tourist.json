@@ -17,7 +17,7 @@
    "in_list_view": 1,
    "in_preview": 1,
    "label": "Salutation",
-   "options": "Ms\nMrs"
+   "options": "Ms\nMrs\nMr\nMstr\nGroup"
   },
   {
    "fieldname": "name1",
@@ -36,7 +36,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-01 10:52:41.236620",
+ "modified": "2024-11-29 14:09:22.431023",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Tourist",
