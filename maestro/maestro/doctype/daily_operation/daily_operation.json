@@ -1,23 +1,31 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "naming_series:",
  "creation": "2024-11-28 14:16:13.276687",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
   "section_break_6n2r",
+  "naming_series",
   "date",
   "client",
   "column_break_lvfi",
   "b2b",
   "mino",
-  "amended_from",
+  "sales_order",
   "section_break_snfh",
   "adult",
   "column_break_arbc",
   "child",
   "column_break_deuw",
   "column_break_uure",
+  "section_break_uebi",
+  "currency",
+  "conversion_rate",
+  "column_break_qsel",
+  "grand_total",
+  "base_grand_total",
   "section_break_hagn",
   "hotel",
   "room",
@@ -44,16 +52,6 @@
   {
    "fieldname": "section_break_6n2r",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "amended_from",
-   "fieldtype": "Link",
-   "label": "Amended From",
-   "no_copy": 1,
-   "options": "Daily Operation",
-   "print_hide": 1,
-   "read_only": 1,
-   "search_index": 1
   },
   {
    "fieldname": "date",
@@ -217,15 +215,63 @@
    "fieldname": "paging",
    "fieldtype": "Data",
    "label": "Paging"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Series",
+   "options": "DAO-OPR-.YYYY.-.###",
+   "reqd": 1
+  },
+  {
+   "fieldname": "sales_order",
+   "fieldtype": "Link",
+   "label": "Sales Order",
+   "options": "Sales Order",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_uebi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency"
+  },
+  {
+   "default": "1",
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Conversion Rate"
+  },
+  {
+   "fieldname": "column_break_qsel",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "options": "currency"
+  },
+  {
+   "fieldname": "base_grand_total",
+   "fieldtype": "Currency",
+   "label": "Base Grand Total",
+   "options": "Company:company:default_currency",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
- "is_submittable": 1,
  "links": [],
- "modified": "2024-11-29 14:07:44.665189",
+ "modified": "2024-11-30 20:06:56.843995",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Daily Operation",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -238,7 +284,6 @@
    "report": 1,
    "role": "System Manager",
    "share": 1,
-   "submit": 1,
    "write": 1
   }
  ],

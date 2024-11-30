@@ -22,6 +22,7 @@ def real_qty_and_entities_items(self, method=None):
         if not i.custom_quantity:
             i.custom_quantity = i.qty
         
+        # menghitung qty asli hanya jika item group hotels
         real_qty = i.custom_quantity
         if i.item_group in ["Hotels"]:
             i.custom_entities = date_diff(i.custom_check_out, i.custom_check_in) or 1
@@ -51,6 +52,34 @@ def make_additional_sales_order(source_name, target_doc=None):
         target_doc,
         set_missing_values,
         ignore_child_tables=True
+    )
+
+    return doc
+
+@frappe.whitelist()
+def make_project(source_name, target_doc=None):
+    def postprocess(source, doc):
+        doc.project_type = "External"
+        doc.project_name = source.name
+        
+        doc.create_summary_list(source.currency, source.rounded_total)
+
+    doc = get_mapped_doc(
+        "Sales Order",
+        source_name,
+        {
+            "Sales Order": {
+                "doctype": "Project",
+                "validation": {"docstatus": ["=", 1]},
+                "field_map": {
+                    "name": "sales_order",
+                    "base_grand_total": "estimated_costing",
+                    "net_total": "total_sales_amount",
+                },
+            },
+        },
+        target_doc,
+        postprocess,
     )
 
     return doc

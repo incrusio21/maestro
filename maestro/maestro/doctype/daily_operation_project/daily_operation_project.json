@@ -12,7 +12,12 @@
   "section_break_eksn",
   "hotel",
   "launch",
-  "flight"
+  "flight",
+  "column_break_zqds",
+  "currency",
+  "conversion_rate",
+  "grand_total",
+  "base_grand_total"
  ],
  "fields": [
   {
@@ -21,7 +26,8 @@
    "in_list_view": 1,
    "label": "Daily Operation",
    "options": "Daily Operation",
-   "read_only": 1
+   "read_only": 1,
+   "unique": 1
   },
   {
    "fieldname": "column_break_stqc",
@@ -43,27 +49,61 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Hotel",
-   "options": "Item"
+   "options": "Item",
+   "read_only_depends_on": "eval:doc.daily_operation"
   },
   {
    "fieldname": "launch",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Launch",
-   "options": "Item"
+   "options": "Item",
+   "read_only_depends_on": "eval:doc.daily_operation"
   },
   {
    "fieldname": "flight",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Flight",
-   "options": "Flight"
+   "options": "Flight",
+   "read_only_depends_on": "eval:doc.daily_operation"
+  },
+  {
+   "fieldname": "column_break_zqds",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "currency",
+   "fieldtype": "Link",
+   "label": "Currency",
+   "options": "Currency",
+   "read_only_depends_on": "eval:doc.daily_operation"
+  },
+  {
+   "default": "1",
+   "fieldname": "conversion_rate",
+   "fieldtype": "Float",
+   "label": "Conversion Rate",
+   "read_only_depends_on": "eval:doc.daily_operation"
+  },
+  {
+   "fieldname": "grand_total",
+   "fieldtype": "Currency",
+   "label": "Grand Total",
+   "read_only_depends_on": "eval:doc.daily_operation"
+  },
+  {
+   "fieldname": "base_grand_total",
+   "fieldtype": "Currency",
+   "label": "Base Grand Total",
+   "options": "Company:company:default_currency",
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-29 14:19:17.006951",
+ "modified": "2024-11-30 20:52:58.444516",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Daily Operation Project",
