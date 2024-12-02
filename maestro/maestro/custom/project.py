@@ -2,6 +2,7 @@
 # License: GNU General Public License v3. See license.txt
 
 import frappe
+from frappe.utils import date_diff
 
 def validate_so_and_daily_operation(self, method):
     do_project = self.get("custom_reference", { "daily_operation": True })
@@ -15,7 +16,9 @@ def validate_so_and_daily_operation(self, method):
             "sales_order": ["!=", self.sales_order]
         }, pluck="name")
     
-    if do_list:
+    if do_list or len(do_project) != (
+        date_diff(self.expected_end_date, self.expected_start_date) + 1
+    ):
         frappe.throw("Please recreate the daily operation.")
 
 def create_daily_operation(self, method=None):
@@ -31,7 +34,7 @@ def create_daily_operation(self, method=None):
             do.set(field, self.get(field))
 
         # field dari table references
-        for field in ["date", "hotel", "launch", "flight", "currency", "conversion_rate", "grand_total"]:
+        for field in ["date", "hotel", "lunch", "flight", "currency", "conversion_rate", "grand_total"]:
             do.set(field, row.get(field))
 
         do.update_base_total()
