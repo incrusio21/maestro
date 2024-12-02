@@ -11,6 +11,7 @@
   "date",
   "client",
   "column_break_lvfi",
+  "company",
   "b2b",
   "mino",
   "sales_order",
@@ -263,11 +264,18 @@
    "label": "Base Grand Total",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-11-30 20:06:56.843995",
+ "modified": "2024-12-02 09:02:20.396063",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Daily Operation",

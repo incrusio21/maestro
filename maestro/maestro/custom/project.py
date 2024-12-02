@@ -27,7 +27,7 @@ def create_daily_operation(self, method=None):
     for row in not_link_do:
         do = frappe.new_doc("Daily Operation")
         do.sales_order = self.sales_order
-        for field in ["date", "hotel", "launch", "flight", "currency", "conversion_rate", "grand_total"]:
+        for field in ["company", "date", "hotel", "launch", "flight", "currency", "conversion_rate", "grand_total"]:
             do.set(field, row.get(field))
 
         do.update_base_total()
