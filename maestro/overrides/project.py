@@ -5,6 +5,7 @@ import frappe
 from frappe.utils import add_days, date_diff, flt
 
 from erpnext.projects.doctype.project.project import Project
+from frappe.model.document import Document
 
 class Project(Project):
 
@@ -54,18 +55,20 @@ class Project(Project):
 
     def upadate_daily_operation_ref(self, daily_operation=None):
         do_to_update, selected_do = self.custom_reference, False
-
+        
         # update field pada table reference. jika terdapat isi daily operation maka hanya ubah data tersebut
-        if isinstance(daily_operation, dict):
+        if isinstance(daily_operation, Document):
             do_to_update = self.get("custom_reference", {"daily_operation": daily_operation.get("name")})
             selected_do = True
-
+    
         updated_field = ["date", "hotel", "lunch", "flight", "currency", "base_grand_total", "grand_total"]
         for dop in do_to_update:
             do = frappe.get_value("Daily Operation", dop.daily_operation, updated_field, as_dict=1) if not selected_do else daily_operation
             for field in updated_field:
                 dop.set(field, do.get(field))
-                
+        
+            
+
         self.calculate_summary()
 
     @frappe.whitelist()    
