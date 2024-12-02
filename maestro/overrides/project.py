@@ -61,7 +61,7 @@ class Project(Project):
             do_to_update = self.get("custom_reference", {"daily_operation": daily_operation.get("name")})
             selected_do = True
     
-        updated_field = ["date", "hotel", "lunch", "flight", "currency", "base_grand_total", "grand_total"]
+        updated_field = ["date", "hotel", "lunch", "flight", "currency", "grand_total", "conversion_rate", "base_grand_total"]
         for dop in do_to_update:
             do = frappe.get_value("Daily Operation", dop.daily_operation, updated_field, as_dict=1) if not selected_do else daily_operation
             for field in updated_field:
