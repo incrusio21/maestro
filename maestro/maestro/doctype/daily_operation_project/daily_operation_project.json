@@ -11,7 +11,7 @@
   "date",
   "section_break_eksn",
   "hotel",
-  "launch",
+  "lunch",
   "flight",
   "column_break_zqds",
   "currency",
@@ -53,14 +53,6 @@
    "read_only_depends_on": "eval:doc.daily_operation"
   },
   {
-   "fieldname": "launch",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "Launch",
-   "options": "Item",
-   "read_only_depends_on": "eval:doc.daily_operation"
-  },
-  {
    "fieldname": "flight",
    "fieldtype": "Link",
    "in_list_view": 1,
@@ -90,6 +82,7 @@
    "fieldname": "grand_total",
    "fieldtype": "Currency",
    "label": "Grand Total",
+   "options": "currency",
    "read_only_depends_on": "eval:doc.daily_operation"
   },
   {
@@ -98,12 +91,20 @@
    "label": "Base Grand Total",
    "options": "Company:company:default_currency",
    "read_only": 1
+  },
+  {
+   "fieldname": "lunch",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Lunch",
+   "options": "Item",
+   "read_only_depends_on": "eval:doc.daily_operation"
   }
  ],
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2024-11-30 20:52:58.444516",
+ "modified": "2024-12-02 13:58:45.665892",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Daily Operation Project",
