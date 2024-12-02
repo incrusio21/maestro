@@ -26,8 +26,12 @@ def create_daily_operation(self, method=None):
     # buat daily operation dengan default value sesuai dengan data pada  
     for row in not_link_do:
         do = frappe.new_doc("Daily Operation")
-        do.sales_order = self.sales_order
-        for field in ["company", "date", "hotel", "launch", "flight", "currency", "conversion_rate", "grand_total"]:
+        # field dari doc project
+        for field in ["sales_order", "company"]:
+            do.set(field, self.get(field))
+
+        # field dari table references
+        for field in ["date", "hotel", "launch", "flight", "currency", "conversion_rate", "grand_total"]:
             do.set(field, row.get(field))
 
         do.update_base_total()
@@ -35,10 +39,10 @@ def create_daily_operation(self, method=None):
 
         row.daily_operation = do.name
         row.base_grand_total = do.base_grand_total
-
+        
     # check data reference pada database untuk d bandingkan
     previous = self.get_doc_before_save()
-    if not previous.get("custom_reference"):
+    if not previous or not previous.get("custom_reference"):
         return
     
     # get data daily operation yang sudah tidak ada pada table untuk d hapus
