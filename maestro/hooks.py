@@ -171,7 +171,8 @@ doc_events = {
 # ------------------------------
 #
 override_whitelisted_methods = {
-	"erpnext.selling.doctype.sales_order.sales_order.make_project": "maestro.maestro.custom.sales_order.make_project"
+	"erpnext.selling.doctype.sales_order.sales_order.make_project": "maestro.maestro.custom.sales_order.make_project",
+    "erpnext.selling.doctype.sales_order.sales_order.make_purchase_order": "maestro.maestro.custom.sales_order.make_purchase_order"
 }
 #
 # each overriding function accepts a `data` argument;
