@@ -3,7 +3,6 @@
 
 frappe.ui.form.on("Sales Order", {
     refresh(frm) {
-        console.log(frm.doc.docstatus)
         if(frm.doc.docstatus == 1){
             frm.add_custom_button(
                 __("Additional Order"),

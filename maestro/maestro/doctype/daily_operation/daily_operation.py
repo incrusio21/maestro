@@ -11,8 +11,8 @@ from frappe.model.document import Document
 class DailyOperation(Document):
 	
 	def validate(self):
-		self.validate_conversion_rate()
-		self.update_base_total()
+		# self.validate_conversion_rate()
+		# self.update_base_total()
 		self.update_project()
 	
 	def validate_conversion_rate(self):
@@ -32,6 +32,9 @@ class DailyOperation(Document):
 			return
 		
 		project = frappe.get_value("Daily Operation Project", { "daily_operation": self.name }, "parent")
+		if not project:
+			return
+		
 		doc = frappe.get_doc("Project", project, for_update=1)
 		doc.upadate_daily_operation_ref(self)
 		doc.save(ignore_permissions=None)

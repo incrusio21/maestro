@@ -1,0 +1,46 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-17 11:52:40.556364",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "fieldname",
+  "column_break_cxpa",
+  "item_group"
+ ],
+ "fields": [
+  {
+   "fieldname": "fieldname",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Fieldname",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_cxpa",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "item_group",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Item Group",
+   "options": "Item Group",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-12-17 12:34:35.860463",
+ "modified_by": "Administrator",
+ "module": "Maestro",
+ "name": "Daily Operation Setting Group",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

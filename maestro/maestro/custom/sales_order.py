@@ -35,6 +35,9 @@ def real_qty_and_entities_items(self, method=None):
 @frappe.whitelist()
 def make_additional_sales_order(source_name, target_doc=None):
     def set_missing_values(source, target):
+        if not source.custom_prev_so:
+            target.custom_prev_so = source.name
+
         target.run_method("set_missing_values")
         target.run_method("calculate_taxes_and_totals")
 
@@ -44,7 +47,6 @@ def make_additional_sales_order(source_name, target_doc=None):
         {
             "Sales Order": {
                 "doctype": "Sales Order",
-                "field_map": {"name": "custom_prev_so"},
                 "field_no_map": ["taxes_and_charges"],
                 "validation": {
                     "docstatus": ["=", 1],

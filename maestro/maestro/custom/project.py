@@ -5,6 +5,9 @@ import frappe
 from frappe.utils import date_diff
 
 def validate_so_and_daily_operation(self, method):
+    if self.do_setting.create_by_purchase_order:
+        return 
+    
     do_project = self.get("custom_reference", { "daily_operation": True })
     if not do_project:
         return
@@ -22,6 +25,9 @@ def validate_so_and_daily_operation(self, method):
         frappe.throw("Please recreate the daily operation.")
 
 def create_daily_operation(self, method=None):
+    if self.do_setting.create_by_purchase_order:
+        return 
+    
     not_link_do = self.get("custom_reference", { "daily_operation": False })
     if not not_link_do:
         return
@@ -57,6 +63,9 @@ def create_daily_operation(self, method=None):
         frappe.delete_doc("Daily Operation", row, force=1)
 
 def remove_daily_operation(self, method=None):
+    if self.do_setting.create_by_purchase_order:
+        return 
+    
     link_do = self.get("custom_reference", { "daily_operation": True })
     
     for row in link_do:

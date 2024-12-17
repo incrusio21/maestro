@@ -14,7 +14,7 @@
   "company",
   "b2b",
   "mino",
-  "sales_order",
+  "purchase_order",
   "section_break_snfh",
   "adult",
   "column_break_arbc",
@@ -113,7 +113,8 @@
    "fieldname": "hotel",
    "fieldtype": "Link",
    "label": "Hotel",
-   "options": "Item"
+   "options": "Item",
+   "read_only": 1
   },
   {
    "fieldname": "room",
@@ -122,8 +123,10 @@
   },
   {
    "fieldname": "program",
-   "fieldtype": "Data",
-   "label": "Program"
+   "fieldtype": "Link",
+   "label": "Program",
+   "options": "Item",
+   "read_only": 1
   },
   {
    "fieldname": "time",
@@ -188,8 +191,9 @@
   },
   {
    "fieldname": "supplier",
-   "fieldtype": "Data",
-   "label": "Supplier"
+   "fieldtype": "Link",
+   "label": "Supplier",
+   "options": "Supplier"
   },
   {
    "fieldname": "flight",
@@ -226,15 +230,9 @@
    "reqd": 1
   },
   {
-   "fieldname": "sales_order",
-   "fieldtype": "Link",
-   "label": "Sales Order",
-   "options": "Sales Order",
-   "read_only": 1
-  },
-  {
    "fieldname": "section_break_uebi",
-   "fieldtype": "Section Break"
+   "fieldtype": "Section Break",
+   "hidden": 1
   },
   {
    "fieldname": "currency",
@@ -271,11 +269,19 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "purchase_order",
+   "fieldtype": "Link",
+   "label": "Purchase Order",
+   "options": "Purchase Order",
+   "read_only": 1
   }
  ],
+ "in_create": 1,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2024-12-02 09:02:20.396063",
+ "modified": "2024-12-17 13:49:54.697351",
  "modified_by": "Administrator",
  "module": "Maestro",
  "name": "Daily Operation",

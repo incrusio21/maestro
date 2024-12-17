@@ -29,8 +29,9 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {
+    "Project" : "maestro/custom/project.js",
+    "Purchase Order" : "maestro/custom/purchase_order.js",
     "Sales Order" : "maestro/custom/sales_order.js",
-    "Project" : "maestro/custom/project.js"
 }
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
@@ -131,14 +132,18 @@ doc_events = {
 	# 	"on_cancel": "method",
 	# 	"on_trash": "method"
 	# }
-    "Sales Order": {
-        "autoname": "maestro.maestro.custom.sales_order.additional_sales_order_autoname",
-        "before_validate": "maestro.maestro.custom.sales_order.real_qty_and_entities_items"
+    "Purchase Order": {
+        "on_submit": ["maestro.maestro.custom.purchase_order.create_daily_operation", "maestro.maestro.custom.purchase_order.update_project_daily_operation"],
+        "on_cancel": ["maestro.maestro.custom.purchase_order.update_project_daily_operation", "maestro.maestro.custom.purchase_order.remove_daily_operation"]
     },
     "Project": {
         "validate": ["maestro.maestro.custom.project.validate_so_and_daily_operation", "maestro.maestro.custom.project.create_daily_operation"],
         "after_delete": "maestro.maestro.custom.project.remove_daily_operation",
-    }
+    },
+    "Sales Order": {
+        "autoname": "maestro.maestro.custom.sales_order.additional_sales_order_autoname",
+        "before_validate": "maestro.maestro.custom.sales_order.real_qty_and_entities_items"
+    },
 }
 
 # Scheduled Tasks

@@ -1,0 +1,56 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-12-17 11:51:09.314761",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "create_by_purchase_order",
+  "item_group_date",
+  "fieldname_item_filters"
+ ],
+ "fields": [
+  {
+   "default": "0",
+   "fieldname": "create_by_purchase_order",
+   "fieldtype": "Check",
+   "label": "Create by Purchase Order"
+  },
+  {
+   "fieldname": "fieldname_item_filters",
+   "fieldtype": "Table",
+   "label": "Fieldname Item Filters",
+   "options": "Daily Operation Setting Group"
+  },
+  {
+   "depends_on": "eval:doc.create_by_purchase_order",
+   "fieldname": "item_group_date",
+   "fieldtype": "Table",
+   "label": "Item Group Date",
+   "options": "Daily Operation Setting Date"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-12-17 14:21:19.021876",
+ "modified_by": "Administrator",
+ "module": "Maestro",
+ "name": "Daily Operation Setting",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
