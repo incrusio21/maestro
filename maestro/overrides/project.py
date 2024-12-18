@@ -29,18 +29,20 @@ class Project(Project):
         self.reload()
 
     def calculate_summary(self):
-        if not self.sales_order:
-            return
-
-        sum_dict = {}
-
         # ambil data so dan create summary list jika blum ada
-        so_total = frappe.get_cached_value("Sales Order", self.sales_order, ["currency", "rounded_total", "base_rounded_total"], as_dict=1)
+        so_list = frappe.get_list("Sales Order", filters={"project": self.name}, fields=["currency", "rounded_total", "base_rounded_total"])
+        if not so_list:
+            return
+        
+        sum_dict, selling = {}, 0
+        for s_o in so_list:
+            cur_dict = sum_dict.setdefault(s_o.currency, {"nett": 0, "selling": 0})
+            cur_dict["nett"] += s_o.rounded_total
+            selling += s_o.base_rounded_total
+
+        # so_total = frappe.get_cached_value("Sales Order", self.sales_order, ["currency", "rounded_total", "base_rounded_total"], as_dict=1)
         if not self.get("custom_summary_list"):
             self.create_summary_list()
-
-        # total so masuk dalam field selling sesuai currency
-        sum_dict.setdefault(so_total.currency, {"nett": 0, "selling": so_total.rounded_total})
         
         profit_precision = self.precision("custom_profit")
         
@@ -55,7 +57,7 @@ class Project(Project):
             })
 
         # base grand total daily operation - base rounded total sales order
-        self.custom_profit = flt(profit - so_total.base_rounded_total, profit_precision)
+        self.custom_profit = flt(profit - selling, profit_precision)
 
     def summary_by_daily_purchase_order(self, sum_dict):
         profit = 0
