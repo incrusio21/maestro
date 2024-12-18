@@ -57,7 +57,7 @@ class Project(Project):
             })
 
         # base grand total daily operation - base rounded total sales order
-        self.custom_profit = flt(profit - selling, profit_precision)
+        self.custom_profit = flt(selling - profit, profit_precision)
 
     def summary_by_daily_purchase_order(self, sum_dict):
         profit = 0
