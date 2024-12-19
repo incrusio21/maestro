@@ -17,13 +17,7 @@ class Project(Project):
         if not self.sales_order:
             return 
         
-        po_list = frappe.get_list("Purchase Order", {"custom_sales_order": self.sales_order}, pluck="name")
-        for po in po_list:
-            doc = frappe.get_doc("Purchase Order", po)
-            doc.project = self.name
-            doc.db_update()
-
-        self.update_daily_operation_by_purchase_order()
+        self.update_daily_operation_by_purchase_order(True)
         self.calculate_summary()
         self.db_update_all()
         self.reload()
@@ -37,7 +31,7 @@ class Project(Project):
         sum_dict, selling = {}, 0
         for s_o in so_list:
             cur_dict = sum_dict.setdefault(s_o.currency, {"nett": 0, "selling": 0})
-            cur_dict["nett"] += s_o.rounded_total
+            cur_dict["selling"] += s_o.rounded_total
             selling += s_o.base_rounded_total
 
         # so_total = frappe.get_cached_value("Sales Order", self.sales_order, ["currency", "rounded_total", "base_rounded_total"], as_dict=1)
@@ -101,10 +95,16 @@ class Project(Project):
                 "selling": selling_total if selling_curr == curr else 0
             })
 
-    def update_daily_operation_by_purchase_order(self):
+    def update_daily_operation_by_purchase_order(self, update_po=False):
         if not self.do_setting.create_by_purchase_order:
             return
-        
+        if update_po:
+            po_list = frappe.get_list("Purchase Order", {"custom_sales_order": self.sales_order}, pluck="name")
+            for po in po_list:
+                doc = frappe.get_doc("Purchase Order", po)
+                doc.project = self.name
+                doc.db_update()
+
         pur_ord = frappe.qb.DocType("Purchase Order")
         daily_opt = frappe.qb.DocType("Daily Operation")
 
