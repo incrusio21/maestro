@@ -178,7 +178,7 @@
             {% set check_in = frappe.utils.format_date(item.custom_check_in, "dd.MM.YYYY")%}
             {% set check_out = frappe.utils.format_date(item.custom_check_out, "dd.MM.YYYY")%}
             <td style="padding: 2px !important;">
-                {{ item.description }} *{{ item.get_formatted("custom_quantity") }} <br>
+                {{ item.description }} <br>
                 <div style="font-size: 11px;">
                     Rates used {{ check_in }} - {{ check_out }} / {{ item.get_formatted("custom_quantity") }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
                 </div>
@@ -196,6 +196,11 @@
         {% else %}
             <td style="padding: 2px !important;">
                 {{ item.item_group }} : {{ item.description }} 
+                {% if item.item_group == "Transfer" %}
+                <div style="font-size: 11px;">
+                    From {{ item.custom_from or "" }} to {{ item.custom_to or "" }}
+                </div>
+                {% endif %}
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 {{ dd }}
