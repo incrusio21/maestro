@@ -122,13 +122,13 @@
         </tr>
         <tr>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
-                {{ h.custom_room_type }}
+                {{ h.custom_room_type or "" }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
-                {{ h.get_formatted("custom_entities") }}
+                {{ h.get_formatted("qyt") }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
-                {{ h.custom_accomodation }}
+                {{ h.custom_accomodation or "" }}
             </td>
             <td style="padding: 2px !important; border-bottom: 3px double #000;">
                 {{ h.custom_board_type }}
