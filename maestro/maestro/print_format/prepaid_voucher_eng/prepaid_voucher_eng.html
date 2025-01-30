@@ -139,6 +139,43 @@
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
         </tr>
         {% endif %}
+        {% set activities = doc.get("items", {"item_group": "Activities", "custom_is_print": 1}) or doc.get("items", {"item_group": "Activities"}) %}
+        {% if activities %}
+            <tr>
+                <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                    <b>Activities</b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                    <b>Description </b>
+                </td>
+                <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                    <b>Remarks</b>
+                    <div style="font-size: 10px;">Тип</div>
+                </td>
+                <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                    <b>Date</b>
+                    <div style="font-size: 10px;">Дата</div>
+                </td>
+            </tr>
+            {% for a in activities %}
+            <tr>
+                <td colspan="4" style="padding: 2px !important;border-bottom: 3px double #000;">
+                    {{ a.description }}
+                </td>
+                <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
+                    {{ a.custom_remarks or "-"}}
+                </td>
+                <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
+                    {{ "" or "Anytime" }}
+                </td>
+            </tr>
+            {% endfo %}
+            <tr>
+                <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
+            </tr>
+        {% endif %}
         {% set transfers = doc.get("items", {"item_group": "Transfer", "custom_is_print": 1}) or doc.get("items", {"item_group": "Transfer"}) %}
         {% if transfers %}
         <tr>
