@@ -135,7 +135,7 @@
                 {% endfor %}
                 <tr>
                     <td style="padding: 2px !important;">
-                        TOTAL: {{ doc.custom_tourist_detail|len }} PAX
+                        TOTAL: {{ doc.custom_pax or "-" }} PAX
                     </td>
                 </tr>
                 {% endif %}
@@ -177,48 +177,54 @@
         {% if item.item_group == "Hotels" %}
             {% set check_in = frappe.utils.format_date(item.custom_check_in, "dd.MM.YYYY")%}
             {% set check_out = frappe.utils.format_date(item.custom_check_out, "dd.MM.YYYY")%}
-            <td style="padding: 2px !important;">
-                {{ item.description }} <br>
+            <td style="padding: 2px !important; padding-top: 6px !important">
+                <b>{{ item.description }}</b>
+                <br>
+                <div>
+                    {{ item.custom_room_type or "-" }}/{{ item.custom_accomodation or "-" }}/{{ item.custom_board_type or "-" }}
+                </div>
                 <div style="font-size: 11px;">
-                    Rates used {{ check_in }} - {{ check_out }} / {{ item.get_formatted("custom_quantity") }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
+                    Rates used {{ check_in }} - {{ check_out }} / {{ item.get_formatted("custom_entities") }} nts. * {{ frappe.utils.fmt_money(item.rate) }} {{ doc.currency }} per/room per/night
                 </div>
             </td>
-            <td class="text-center" style="padding: 2px !important;">
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important">
                 {{ check_in }} - {{ check_out }}
             </td>
-            <td class="text-center" style="padding: 2px !important;">
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important">
                 {{ item.get_formatted("custom_entities") }}
             </td>
-            <td class="text-right" style="padding: 2px !important;">
+            <td class="text-right" style="padding: 2px !important;padding-top: 6px !important">
                 {{ frappe.utils.fmt_money(item.rate) }} 
             </td>
-            <td class="text-center" style="padding: 2px !important;">{{ 1 }}</td>
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important">{{ item.get_formatted("custom_quantity") }}</td>
         {% else %}
-            <td style="padding: 2px !important;">
-                {{ item.item_group }} : {{ item.description }} 
+            <td style="padding: 2px !important;padding-top: 6px !important">
+                <b>{{ item.item_group }} : {{ item.description }} 
+                    {{ ("/ " + item.custom_type_mobil) if item.item_group == "Transfer" and item.custom_type_mobil else "" }}
+                </b>
                 {% if item.item_group == "Transfer" %}
                 <div style="font-size: 11px;">
                     From {{ item.custom_from or "" }} to {{ item.custom_to or "" }}
                 </div>
                 {% endif %}
             </td>
-            <td class="text-center" style="padding: 2px !important;">
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important">
                 {{ dd }}
             </td>
-            <td class="text-center" style="padding: 2px !important;"></td>
-            <td class="text-right" style="padding: 2px !important;">
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important"></td>
+            <td class="text-right" style="padding: 2px !important;padding-top: 6px !important">
                 {{ frappe.utils.fmt_money(item.rate) }}
             </td>
-            <td class="text-center" style="padding: 2px !important;">{{ item.get_formatted("qty") }}</td>
-        {% endif %}
-            <td class="text-right" style="padding: 2px !important;">{{ frappe.utils.fmt_money(item.amount) }}</td>
+            <td class="text-center" style="padding: 2px !important;padding-top: 6px !important">{{ item.get_formatted("qty") }}</td>
+            {% endif %}
+            <td class="text-right" style="padding: 2px !important;padding-top: 6px !important">{{ frappe.utils.fmt_money(item.amount) }}</td>
         </tr>
         {% if totals.update({ "inv": totals.inv + item.amount }) %}{% endif %}
         {% endfor %}
         {% for tax in doc.taxes%}
         <tr>
-            <td style="padding: 2px !important;">
-                Surcharge : {{ tax.description }} 
+            <td style="padding: 2px !important;padding-top: 6px !important">
+                <b>Surcharge : {{ tax.description }} </b>
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 Any Time
@@ -245,6 +251,31 @@
                 <b>{{ frappe.utils.fmt_money(totals.inv) }}</b>
             </td>
         </tr>
+        {% if doc.custom_agent_advance_paid %}
+        <tr>
+            <td style="padding: 2px !important;" class="text-right">&nbsp;</td>
+            <td style="padding: 2px !important;" class="text-right" colspan="4">
+                <b>Deposit, {{ doc.currency }}</b>
+            </td>
+            <td style="padding: 2px !important;" class="text-right" colspan="5">
+                <b>{{ frappe.utils.fmt_money(doc.custom_agent_advance_paid) }}</b>
+            </td>
+        </tr>
+        {% endif %}
+        <tr>
+            <td style="padding: 2px !important;" class="text-right">
+                {% if frappe.db.get_value("Company", company, "default_currency") != doc.currency %}
+                <b>Exchange Rate</b> {{ doc.get_formatted("conversion_rate") }}
+                {% endif %}
+            </td>
+            <td style="padding: 2px !important;" class="text-right" colspan="4">
+                <b>Grand Total, {{ doc.currency }}</b>
+            </td>
+            <td style="padding: 2px !important;" class="text-right" colspan="5">
+                <b>{{ frappe.utils.fmt_money(totals.inv - doc.custom_agent_advance_paid) }}</b>
+            </td>
+        </tr>
+        
     </table>
 
     {% if doc.custom_bank_info %}
@@ -277,7 +308,7 @@
         <tr>
             <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Issued by: </td>
             <td class="text-center" style="padding: 2px !important;vertical-align: middle !important">
-                <img src="/files/Picture1.jpg" style="width: 50% !important;" />
+                <img src="/files/SIGN PAK GB (1).png" style="width: 50% !important;" />
             </td>
             <td class="text-right" style="padding: 2px !important;vertical-align: middle !important">Finance</td>
         </tr>

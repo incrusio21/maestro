@@ -1,3 +1,5 @@
+{% set items = doc.get("items", {"custom_is_print": 1}) or doc.items %}
+
 <div class="page-break">
     <table style="width: 100%;font-size:inherit">
         <col style="width: 12%">
@@ -35,7 +37,7 @@
                 <div style="font-size: 10px;">Агент</div>
             </td>
             <td style="padding: 2px !important;">
-                {{ doc.get_formatted("customer") }}
+                {{ doc.get_formatted("company") }}
             </td>
         </tr>
         <tr>
@@ -56,7 +58,7 @@
         <tr>
             <td colspan="7" style="padding: 2px !important;border-top: 1px solid #000;">&nbsp;</td>
         </tr>
-        {% set hotels = doc.get("items", {"item_group": "Hotels", "custom_is_print": 1}) or doc.get("items", {"item_group": "Hotels"}) %}
+        {% set hotels = items | selectattr("item_group", "==", "Hotels") | list %}
         {% if hotels %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -66,7 +68,7 @@
         {% for h in hotels %}
         <tr>
             <td colspan="6" style="padding: 2px !important;">
-                {{ h.description }} *{{ h.get_formatted("custom_quantity") }}
+                {{ h.description }}
             </td>
             <td class="text-center" style="padding: 2px !important;">
                 <b>Supplier</b> Поставщик
@@ -125,7 +127,7 @@
                 {{ h.custom_room_type or "" }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
-                {{ h.get_formatted("qty") }}
+                {{ h.get_formatted("custom_quantity") }}
             </td>
             <td colspan="2" style="padding: 2px !important; border-bottom: 3px double #000;">
                 {{ h.custom_accomodation or "" }}
@@ -148,7 +150,8 @@
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
         </tr>
         {% endif %}
-        {% set activities = doc.get("items", {"item_group": "Activities", "custom_is_print": 1}) or doc.get("items", {"item_group": "Activities"}) %}
+        {% set activities = items | selectattr("item_group", "==", "Activities") | list %}
+        
         {% if activities %}
             <tr>
                 <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -156,36 +159,36 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <td colspan="4" style="padding: 2px !important;background-color: #E7E6E6">
                     <b>Description </b>
                 </td>
-                <td colspan="2" style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <td colspan="2" style="padding: 2px !important;background-color: #E7E6E6">
                     <b>Remarks</b>
                     <div style="font-size: 10px;">Тип</div>
                 </td>
-                <td style="padding: 2px !important;border-bottom: 1px solid #000;">
+                <td style="padding: 2px !important;background-color: #E7E6E6">
                     <b>Date</b>
                     <div style="font-size: 10px;">Дата</div>
                 </td>
             </tr>
             {% for a in activities %}
             <tr>
-                <td colspan="4" style="padding: 2px !important;border-bottom: 3px double #000;">
+                <td colspan="4" style="padding: 2px !important;">
                     {{ a.description }}
                 </td>
-                <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
+                <td colspan="2" style="padding: 2px !important;">
                     {{ a.custom_remarks or "-"}}
                 </td>
-                <td colspan="2" style="padding: 2px !important;border-bottom: 3px double #000;">
-                    {{ "" or "Anytime" }}
+                <td colspan="2" style="padding: 2px !important;">
+                    {{ frappe.utils.format_date(a.delivery_date, "dd.MM.YYYY") if a.delivery_date else "" }}
                 </td>
             </tr>
-            {% endfo %}
+            {% endfor %}
             <tr>
                 <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
             </tr>
         {% endif %}
-        {% set transfers = doc.get("items", {"item_group": "Transfer", "custom_is_print": 1}) or doc.get("items", {"item_group": "Transfer"}) %}
+        {% set transfers = items | selectattr("item_group", "==", "Transfer") %}
         {% if transfers %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -242,7 +245,13 @@
                 {{ t.custom_type }}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
-                {{ t.get_formatted("custom_passengers") }} {{ t.custom_passenger_type }}
+                {% if t.custom_passengers %}
+                {{ t.get_formatted("custom_passengers") }} Adult{{ "s" if t.custom_passengers > 1 else ""  }}
+                {% endif %}
+                {% if t.custom_passengers and t.custom_child_passengers %}<br>{% endif %}
+                {% if t.custom_child_passengers %}
+                {{ t.get_formatted("custom_child_passengers") }} Child{{ "s" if t.custom_child_passengers > 1 else ""  }}
+                {% endif %}
             </td>
             <td style="padding: 2px !important;border-bottom: 3px double #000;">
                 {{ frappe.utils.format_date(t.delivery_date, "dd.MM.YYYY") if t.delivery_date else "" }}
@@ -282,7 +291,7 @@
             <td colspan="7" style="padding: 2px !important;">&nbsp;</td>
         </tr>
         {% endif %}
-        {% set services = doc.get("items", {"item_group": "Services", "custom_is_print": 1}) or doc.get("items", {"item_group": "Services"})%}
+        {% set services = items | selectattr("item_group", "==", "Services") %}
         {% if services %}
         <tr>
             <td colspan="7" style="padding: 2px !important;border-bottom: 1px solid #000;">
@@ -372,7 +381,7 @@
         </tr>
         <tr>
             <td colspan="2" style="padding: 2px !important;">
-                <img src="/files/Picture1.jpg" />
+                <img src="/files/SIGN PAK GB (1).png" />
             </td>
         </tr>
         <tr>
